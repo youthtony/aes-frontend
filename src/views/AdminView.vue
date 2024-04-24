@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <div>这是admin页面</div>
+    <div>这里需要登录</div>
   </div>
 </template>
 

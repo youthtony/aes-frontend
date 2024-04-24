@@ -1,6 +1,10 @@
-# aes-frontend
+# 算法评测系统
 
-## Project setup
+---
+### 前后端分离
+[后端代码链接](https://github.com/youthtony/aes-backend)
+
+### Project setup
 ```
 npm install
 ```

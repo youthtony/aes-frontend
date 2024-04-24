@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <BasicLayout />
+    <template v-if="route.path.startsWith('/user')">
+      <router-view />
+    </template>
+    <template v-else>
+      <BasicLayout />
+    </template>
   </div>
 </template>
 
@@ -10,23 +15,19 @@
 </style>
 <script setup lang="ts">
 import BasicLayout from "@/layouts/BasicLayout.vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
 
-const router = useRouter();
-const store = useStore();
+const route = useRoute();
+/**
+ * todo 全局初始化行数，有全局单次调用的代码，都可以写在这
+ */
+const doInit = () => {
+  return;
+};
 
-router.beforeEach((to, from, next) => {
-  console.log(to.meta, from);
-  if (to.meta?.access === "admin") {
-    //   管理员可见，判断用户是否有权限
-    if (store.state.user.loginUser.role === "admin") {
-      next();
-    } else {
-      //    没有权限，跳转到403页面
-      next("/403");
-    }
-  }
-  next();
+// 钩子函数
+onMounted(() => {
+  doInit();
 });
 </script>

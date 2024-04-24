@@ -1,7 +1,7 @@
 <template>
   <!--头部菜单-->
   <div id="GlobalHeader">
-    <a-row style="margin-bottom: 16px" align="center">
+    <a-row align="center">
       <a-col flex="auto">
         <div>
           <a-menu
@@ -18,7 +18,7 @@
               <h1>AES</h1>
             </a-menu-item>
             <!-- 菜单项-->
-            <a-menu-item v-for="item in routes" :key="item.path"
+            <a-menu-item v-for="item in visibleRoutes" :key="item.path"
               >{{ item.name }}
             </a-menu-item>
           </a-menu>
@@ -35,12 +35,31 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { routes } from "@/router/routes";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import checkAccess from "@/access/checkAccess";
+import ACCESS_ENUM from "@/access/accessEnum";
 
 const router = useRouter();
+const store = useStore();
+
+// 对路由进行过滤 computed(计算属性)进行动态获取数据
+const visibleRoutes = computed(() => {
+  return routes.filter((item, index) => {
+    if (item.meta?.hideInMenu === true) {
+      return false;
+    }
+    //   根据权限过滤菜单
+    if (
+      !checkAccess(store.state.user.loginUser, item?.meta?.access as string)
+    ) {
+      return false;
+    }
+    return true;
+  });
+});
 
 // 路由跳转时，更新菜单选中状态
 router.beforeEach((to, from, next) => {
@@ -53,12 +72,14 @@ const selectedKeys = ref(["/"]);
 const doMenuClick = (key: string) => {
   router.push(key);
 };
-
-const store = useStore();
-setTimeout(() => {
-  //todo 需要改成后端获取登录
-  store.dispatch("user/getLoginUser", { userName: "小易", role: "admin" });
-}, 3000);
+//
+// setTimeout(() => {
+//   //todo 需要改成后端获取登录
+//   store.dispatch("user/getLoginUser", {
+//     userName: "小易",
+//     userRole: ACCESS_ENUM.ADMIN,
+//   });
+// }, 3000);
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
