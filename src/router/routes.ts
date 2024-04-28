@@ -7,11 +7,17 @@ import component from "*.vue";
 import UserLayout from "@/layouts/UserLayout.vue";
 import LoginView from "@/views/user/LoginView.vue";
 import RegisterView from "@/views/user/RegisterView.vue";
+import QuestionsView from "@/views/question/QuestionsView.vue";
+import AddQuestionView from "@/views/question/AddQuestionView.vue";
+import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
+import QuestionSubmitView from "@/views/question/QuestionSubmitView.vue";
+import ViewQuestionView from "@/views/question/ViewQuestionView.vue";
 
 /**
  *  路由配置 记录路由数据
  */
 export const routes: Array<RouteRecordRaw> = [
+  // 用户相关
   {
     path: "/user",
     name: "用户",
@@ -32,38 +38,87 @@ export const routes: Array<RouteRecordRaw> = [
       hideInMenu: true,
     },
   },
+  // 题目相关
   {
     path: "/",
-    name: "浏览题目",
-    component: homeView,
+    name: "主页",
+    component: QuestionsView,
     meta: {
       access: ACCESS_ENUM.NOT_LOGIN,
     },
   },
   {
-    path: "/admin",
-    name: "管理员可见",
-    component: AdminView,
+    path: "/questions",
+    name: "浏览题目",
+    component: QuestionsView,
+    meta: {
+      access: ACCESS_ENUM.NOT_LOGIN,
+    },
+  },
+  {
+    path: "/question_submit",
+    name: "浏览题目提交",
+    component: QuestionSubmitView,
+  },
+  {
+    path: "/view/question/:id",
+    name: "在线做题",
+    component: ViewQuestionView,
+    props: true,
+    meta: {
+      access: ACCESS_ENUM.USER,
+      hideInMenu: true,
+    },
+  },
+  {
+    path: "/add/question",
+    name: "创建题目",
+    component: AddQuestionView,
+    meta: {
+      access: ACCESS_ENUM.USER,
+    },
+  },
+  {
+    path: "/update/question",
+    name: "更新题目",
+    component: AddQuestionView,
+    meta: {
+      access: ACCESS_ENUM.USER,
+      hideInMenu: true,
+    },
+  },
+  {
+    path: "/manage/question/",
+    name: "管理题目",
+    component: ManageQuestionView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
     },
   },
+  // {
+  //   path: "/",
+  //   name: "无",
+  //   component: homeView,
+  //   meta: {
+  //     access: ACCESS_ENUM.NOT_LOGIN,
+  //   },
+  // },
   {
     path: "/403",
-    name: "错误",
+    name: "无权限",
     component: ErrorView,
     meta: {
       access: ACCESS_ENUM.NOT_LOGIN,
       hideInMenu: true,
     },
   },
-  {
-    path: "/about",
-    name: "关于",
-    meta: {
-      access: ACCESS_ENUM.NOT_LOGIN,
-    },
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },
+  // {
+  //   path: "/about",
+  //   name: "关于",
+  //   meta: {
+  //     access: ACCESS_ENUM.NOT_LOGIN,
+  //   },
+  //   component: () =>
+  //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  // },
 ];

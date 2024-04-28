@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" style="min-width: 500px">
     <template v-if="route.path.startsWith('/user')">
       <router-view />
     </template>

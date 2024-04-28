@@ -20,7 +20,7 @@
 <style scoped>
 #userLayout {
   background-image: url("@/assets/BLUE.jpg");
-  background-size: cover;
+  background-size: 100% auto;
   height: 100%;
 }
 
@@ -41,10 +41,7 @@
 }
 
 .-footer {
-  //padding: 16px; //margin: 4px; position: sticky; text-align: center; margin: 1px 15px 2px 15px;
-  color: white;
-  bottom: 0;
-  left: 0;
+  //padding: 16px; //margin: 4px; position: sticky; text-align: center; margin: 1px 15px 2px 15px; color: white; bottom: 0; left: 0;
   right: 0;
   background-color: #76beba21;
 }
