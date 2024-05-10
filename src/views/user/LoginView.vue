@@ -7,10 +7,24 @@
       @submit="handleSubmit"
     >
       <h2 style="text-align: center">用户登录</h2>
-      <a-form-item field="userAccount" label="账号">
+      <a-form-item
+        :rules="[
+          { required: true, message: '账号不能为空' },
+          { minLength: 4, message: '账号长度不能低于四位' },
+        ]"
+        field="userAccount"
+        label="账号"
+      >
         <a-input v-model="form.userAccount" placeholder="请输入账号" />
       </a-form-item>
-      <a-form-item field="userPassword" label="密码">
+      <a-form-item
+        :rules="[
+          { required: true, message: '密码不能为空' },
+          { minLength: 6, message: '密码长度不能低于六位' },
+        ]"
+        field="userPassword"
+        label="密码"
+      >
         <a-input-password
           v-model="form.userPassword"
           placeholder="请输入密码"
@@ -19,10 +33,10 @@
         />
       </a-form-item>
       <a-form-item>
-        <a-button @click="reback">返回</a-button>
+        <a-button @click="reback" type="outline">返回</a-button>
         <a-button type="outline" html-type="submit">登录</a-button>
       </a-form-item>
-      <a-link href="register">前往注册</a-link>
+      <a-link href="register" icon>前往注册</a-link>
     </a-form>
   </div>
 </template>
@@ -47,6 +61,11 @@ const reback = () => {
 };
 
 const handleSubmit = async () => {
+  // 校验长度
+  if (form.userAccount?.length === 0 || form.userPassword?.length === 0) {
+    message.error("账号或密码不能为空");
+    return;
+  }
   const res = await UserControllerService.userLoginUsingPost(form);
   console.log("res: ", res);
   if (res.code === 0) {
@@ -69,8 +88,7 @@ const handleSubmit = async () => {
 }
 
 .arco-form {
-  border: #9bf1d9;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 2px 8px #9bf1d9;
   background-color: #fff;
   max-width: 400px;
@@ -79,8 +97,6 @@ const handleSubmit = async () => {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100%;
 }
 
@@ -94,6 +110,7 @@ const handleSubmit = async () => {
 .arco-btn-secondary[type="button"],
 .arco-btn-secondary[type="submit"] {
   color: #76beba;
+  background-color: transparent;
   border: 1px solid #76beba;
 }
 

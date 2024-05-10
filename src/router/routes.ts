@@ -1,17 +1,14 @@
 import { RouteRecordRaw } from "vue-router";
-import homeView from "@/views/HomeView.vue";
-import AdminView from "@/views/AdminView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import ACCESS_ENUM from "@/access/accessEnum";
-import component from "*.vue";
 import UserLayout from "@/layouts/UserLayout.vue";
 import LoginView from "@/views/user/LoginView.vue";
 import RegisterView from "@/views/user/RegisterView.vue";
 import QuestionsView from "@/views/question/QuestionsView.vue";
 import AddQuestionView from "@/views/question/AddQuestionView.vue";
 import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
-import QuestionSubmitView from "@/views/question/QuestionSubmitView.vue";
-import ViewQuestionView from "@/views/question/ViewQuestionView.vue";
+import QuestionSubmitListView from "@/views/question/QuestionSubmitListView.vue";
+import DoSubmitQuestionView from "@/views/question/DoSubmitQuestionView.vue";
 
 /**
  *  路由配置 记录路由数据
@@ -41,14 +38,6 @@ export const routes: Array<RouteRecordRaw> = [
   // 题目相关
   {
     path: "/",
-    name: "主页",
-    component: QuestionsView,
-    meta: {
-      access: ACCESS_ENUM.NOT_LOGIN,
-    },
-  },
-  {
-    path: "/questions",
     name: "浏览题目",
     component: QuestionsView,
     meta: {
@@ -57,13 +46,16 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/question_submit",
-    name: "浏览题目提交",
-    component: QuestionSubmitView,
+    name: "查看题目提交信息",
+    component: QuestionSubmitListView,
+    meta: {
+      access: ACCESS_ENUM.USER,
+    },
   },
   {
     path: "/view/question/:id",
     name: "在线做题",
-    component: ViewQuestionView,
+    component: DoSubmitQuestionView,
     props: true,
     meta: {
       access: ACCESS_ENUM.USER,
@@ -95,14 +87,6 @@ export const routes: Array<RouteRecordRaw> = [
       access: ACCESS_ENUM.ADMIN,
     },
   },
-  // {
-  //   path: "/",
-  //   name: "无",
-  //   component: homeView,
-  //   meta: {
-  //     access: ACCESS_ENUM.NOT_LOGIN,
-  //   },
-  // },
   {
     path: "/403",
     name: "无权限",
@@ -112,13 +96,14 @@ export const routes: Array<RouteRecordRaw> = [
       hideInMenu: true,
     },
   },
-  // {
-  //   path: "/about",
-  //   name: "关于",
-  //   meta: {
-  //     access: ACCESS_ENUM.NOT_LOGIN,
-  //   },
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  // },
+  {
+    path: "/about",
+    name: "关于",
+    meta: {
+      access: ACCESS_ENUM.NOT_LOGIN,
+      hideInMenu: true,
+    },
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
 ];

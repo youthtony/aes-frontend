@@ -1,12 +1,12 @@
 <template>
   <div id="judgeConfig" @change="handleChange">
     <div class="config">
-      <icon-schedule :style="{ fontSize: '10px' }" />
-      <span>{{ timeLimit }} </span>
+      <icon-message :style="{ fontSize: '10px' }" />
+      <span>{{ message }} </span>
     </div>
     <div class="config">
-      <icon-layers :style="{ fontSize: '10px' }" />
-      <span>{{ memoryLimit }} </span>
+      <icon-history :style="{ fontSize: '10px' }" />
+      <span>{{ time }} </span>
     </div>
   </div>
 </template>
@@ -15,8 +15,9 @@
 import { withDefaults, defineProps } from "vue";
 
 interface Props {
-  timeLimit: number;
-  memoryLimit: number;
+  message: string;
+  time: number;
+  memory: number;
   mode?: string;
   handleChange: (v: string) => void;
 }
@@ -25,8 +26,9 @@ interface Props {
  * 给组件指定初始值
  */
 const props = withDefaults(defineProps<Props>(), {
-  timeLimit: () => 1000,
-  memoryLimit: () => 1000,
+  message: () => "ok",
+  time: () => 1000,
+  stackLimit: () => 1000,
   mode: () => "split",
   handleChange: (v: string) => {
     console.log(v);
@@ -36,8 +38,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 <style scoped>
 #judgeConfig {
-  color: #168cff;
-  width: 55px;
+  color: #0181b0;
+  width: 130px;
+  height: 35px;
 }
 
 span {

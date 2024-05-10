@@ -1,11 +1,11 @@
 <template>
   <div id="judgeConfig" @change="handleChange">
-    <div style="display: flex; align-items: center">
-      <icon-caret-down :style="{ fontSize: '12px', color: 'green' }" />
+    <div style="display: flex; align-items: center; color: blue">
+      <icon-caret-down :style="{ fontSize: '12px', color: 'skyblue' }" />
       <span>{{ input }} </span>
       <!--      加入一个空格-->
       <span style="margin: 0 5px"> </span>
-      <icon-caret-up :style="{ fontSize: '12px' }" />
+      <icon-caret-up :style="{ fontSize: '12px', color: 'skyblue' }" />
       <span>{{ output }} </span>
     </div>
   </div>
@@ -36,6 +36,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 <style scoped>
 #judgeConfig {
-  color: green;
+  color: #00d3e3;
 }
 </style>

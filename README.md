@@ -4,6 +4,12 @@
 ### 前后端分离
 [后端代码链接](https://github.com/youthtony/aes-backend)
 
+### 快速生产后端代码
+
+```shell
+openapi --input http://localhost:8121/api/v2/api-docs --output ./generated --client axios
+```
+
 ### Project setup
 ```
 npm install

@@ -1,99 +1,131 @@
 <template>
   <div id="addQuestionView">
-    <a-form :model="form">
-      <h1>{{ updatePage ? "更新题目" : "创建题目" }}</h1>
-      <a-form-item field="title" label="标题">
-        <a-input v-model="form.title" placeholder="请输入标题" />
-      </a-form-item>
-      <a-form-item field="tags" label="标签">
-        <a-input-tag v-model="form.tags" placeholder="请选择标签" allow-clear />
-      </a-form-item>
-      <a-form-item field="content" label="题目内容">
-        <MdEditor :value="form.content" :handle-change="onContentChange" />
-      </a-form-item>
-      <a-form-item field="answer" label="答案">
-        <MdEditor :value="form.answer" :handle-change="onAnswerChange" />
-      </a-form-item>
-      <a-form-item label="判题配置" :content-flex="false" :merge-props="false">
-        <a-space direction="vertical" style="min-width: 480px">
-          <a-form-item field="judgeConfig.timeLimit" label="时间限制">
-            <a-input-number
-              v-model="form.judgeConfig.timeLimit"
-              placeholder="请输入时间限制"
-              mode="button"
-              min="0"
-              size="large"
-            />
-          </a-form-item>
-          <a-form-item field="judgeConfig.memoryLimit" label="内存限制">
-            <a-input-number
-              v-model="form.judgeConfig.memoryLimit"
-              placeholder="请输入内存限制"
-              mode="button"
-              min="0"
-              size="large"
-            />
-          </a-form-item>
-          <a-form-item field="judgeConfig.stackLimit" label="堆栈限制">
-            <a-input-number
-              v-model="form.judgeConfig.stackLimit"
-              placeholder="请输入堆栈限制"
-              mode="button"
-              min="0"
-              size="large"
-            />
-          </a-form-item>
-        </a-space>
-      </a-form-item>
-      <a-form-item
-        label="测试用例配置"
-        :content-flex="false"
-        :merge-props="false"
-      >
+    <div>
+      <a-form :model="form" label-align="right" :on-submit="doSubmit">
+        <h2 style="color: white">
+          {{ updatePage ? "修改题目" : "创建题目" }}
+        </h2>
+        <a-form-item field="title" label="标题: ">
+          <a-input
+            v-model="form.title"
+            placeholder="请输入标题..."
+            :style="{ width: '20%' }"
+          />
+        </a-form-item>
+        <a-form-item field="tags" label="标签: ">
+          <a-input-tag
+            v-model="form.tags"
+            :style="{ width: '40%' }"
+            placeholder="请输入标签..."
+            allow-clear
+          />
+        </a-form-item>
+        <a-form-item field="content" label="题目内容: ">
+          <md-editor
+            mode="split"
+            :value="form.content"
+            :handle-change="onContentChange"
+          />
+        </a-form-item>
+        <a-form-item field="answer" label="标准答案: ">
+          <md-editor
+            mode="split"
+            :value="form.answer"
+            :handle-change="onAnswerChange"
+          />
+        </a-form-item>
+
         <a-form-item
-          v-for="(judgeCaseItem, index) of form.judgeCase"
-          :key="index"
-          no-style
+          label="判题配置"
+          :content-flex="false"
+          :merge-props="false"
         >
-          <a-space direction="vertical" style="min-width: 640px">
-            <a-form-item
-              :field="`form.judgeCase[${index}].input`"
-              :label="`输入用例 ${index}`"
-              :key="index"
-            >
-              <a-input
-                v-model="judgeCaseItem.input"
-                placeholder="请输入测试输入用例"
+          <a-space direction="vertical" style="min-width: 480px">
+            <a-form-item field="judgeConfig.timeLimit" label="时间限制: ">
+              <a-input-number
+                v-model="form.judgeConfig.timeLimit"
+                :min="0"
+                placeholder="请输入时间限制..."
               />
+              ms
             </a-form-item>
-            <a-form-item
-              :field="`form.judgeCase[${index}].output`"
-              :label="`输出用例 ${index}`"
-              :key="index"
-            >
-              <a-input
-                v-model="judgeCaseItem.output"
-                placeholder="请输入测试输出用例"
+            <a-form-item field="judgeConfig.memoryLimit" label="内存限制: ">
+              <a-input-number
+                v-model="form.judgeConfig.memoryLimit"
+                :min="0"
+                placeholder="请输入内存限制..."
               />
+              KB
             </a-form-item>
-            <a-button status="danger" @click="handleDelete(index)">
-              删除
-            </a-button>
           </a-space>
         </a-form-item>
-        <div style="margin-top: 32px">
-          <a-button @click="handleAdd" type="outline" status="success"
-            >新增测试用例
+        <a-form-item
+          label="测试用例"
+          :content-flex="false"
+          :merge-props="false"
+        >
+          <a-space direction="vertical">
+            <a-form-item
+              v-for="(judgeCaseItem, index) of form.judgeCase"
+              :key="index"
+              no-style
+            >
+              <a-space direction="vertical" style="min-width: 520px">
+                <a-form-item
+                  :field="`form.judgeCase[${index}].input`"
+                  :label="`输入用例-${index + 1}`"
+                  :key="index"
+                >
+                  <a-input
+                    v-model="judgeCaseItem.input"
+                    placeholder="请填入输入用例..."
+                  />
+                </a-form-item>
+                <a-form-item
+                  :field="`form.judgeCase[${index}].input`"
+                  :label="`输出用例-${index + 1}`"
+                  :key="index"
+                >
+                  <a-input
+                    v-model="judgeCaseItem.output"
+                    placeholder="请填入输出用例..."
+                  />
+                </a-form-item>
+              </a-space>
+              <a-button
+                style="margin-left: 48px; min-width: 116px"
+                type="outline"
+                status="danger"
+                @click="handleDelete(index)"
+                >删除
+              </a-button>
+            </a-form-item>
+            <div>
+              <a-button
+                type="outline"
+                status="success"
+                @click="handleAdd"
+                style="
+                  float: right;
+                  margin-bottom: 32px;
+                  margin-top: 32px;
+                  margin-left: 570px;
+                "
+                >新增测试用例
+              </a-button>
+            </div>
+          </a-space>
+        </a-form-item>
+        <a-form-item>
+          <a-button
+            @click="doSubmit"
+            style="margin: 0 200px; min-width: 200px"
+            type="primary"
+            >提交
           </a-button>
-        </div>
-      </a-form-item>
-      <div style="margin-top: 16px" />
-      <a-form-item>
-        <a-button type="primary" style="min-width: 200px" @click="doSubmit"
-          >提交
-        </a-button>
-      </a-form-item>
-    </a-form>
+        </a-form-item>
+      </a-form>
+    </div>
   </div>
 </template>
 
@@ -251,35 +283,23 @@ const onAnswerChange = (value: string) => {
 
 <style scoped>
 #addQuestionView {
-  //max-height: 100vh; /* 设置一个最大高度，例如视口高度的80% */ //overflow-y: auto; /* 当内容超出高度时显示滚动条 */
-}
-
-.arco-form {
-  border: #9bf1d9;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px #9bf1d9;
-  background-color: #fff;
-  max-width: 800px;
-  margin: 12px auto;
-  padding: 2em 2em;
-  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: 100%;
 }
 
-.arco-form-item-label-col {
+#form-container form {
+  /* Your form styles */
   display: flex;
-  max-width: 105px;
-  justify-content: flex-start;
-  margin-left: 10px;
+  flex-direction: column;
+  align-items: center;
+  /* Other styles */
 }
 
-.arco-btn {
-  width: 150px;
-  background-color: transparent;
-  margin-left: 5px;
+.-form {
+  justify-content: center;
+  justify-items: center;
+  justify-self: center;
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
   <div id="mdEditor">
     <Editor
-      :value="value"
-      :mode="mode"
+      class="mdEditor"
+      :value="props.value"
+      :locale="locale"
+      :mode="props.mode"
       :plugins="plugins"
-      @change="handleChange"
+      @change="props.handleChange"
     />
   </div>
 </template>
@@ -14,6 +16,16 @@ import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight";
 import { Editor, Viewer } from "@bytemd/vue-next";
 import { ref, withDefaults, defineProps } from "vue";
+import locale from "../locales/zh_Hans.json";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import math from "@bytemd/plugin-math";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import mathLocale from "@bytemd/plugin-math/locales/zh_Hans.json";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import gfmLocale from "@bytemd/plugin-gfm/locales/zh_Hans.json";
 
 /**
  * 定义组件属性类型
@@ -25,9 +37,13 @@ interface Props {
 }
 
 const plugins = [
-  gfm(),
+  gfm({
+    locale: gfmLocale,
+  }),
   highlight(),
-  // Add more plugins here
+  math({
+    locale: mathLocale,
+  }),
 ];
 
 /**
@@ -45,5 +61,9 @@ const props = withDefaults(defineProps<Props>(), {
 <style>
 .bytemd-toolbar-icon.bytemd-tippy.bytemd-tippy-right:last-child {
   display: none;
+}
+
+.bytemd-fullscreen {
+  z-index: 100;
 }
 </style>

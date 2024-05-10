@@ -5,7 +5,7 @@ import { UserControllerService } from "../../generated";
 // initial state 存储状态信息
 const state = () => ({
   loginUser: {
-    userName: "未登录",
+    userName: "点击登录",
   },
 });
 

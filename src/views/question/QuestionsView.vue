@@ -1,11 +1,15 @@
 <template>
+  <!--普通用户查看浏览题目页面-->
   <div id="questionsView">
     <a-form :model="searchParams" layout="inline">
       <a-form-item field="title" label="名称" style="min-width: 240px">
         <a-input v-model="searchParams.title" placeholder="请输入名称" />
       </a-form-item>
       <a-form-item field="tags" label="标签" style="min-width: 240px">
-        <a-input-tag v-model="searchParams.tags" placeholder="请输入标签" />
+        <a-input-tag
+          v-model="searchParams.tags"
+          placeholder="请输入标签，以enter键分隔"
+        />
       </a-form-item>
       <a-form-item>
         <a-button type="primary" @click="doSubmit">提交</a-button>
@@ -26,16 +30,18 @@
     >
       <template #tags="{ record }">
         <a-space wrap>
-          <a-tag v-for="(tag, index) of record.tags" :key="index" color="green"
+          <a-tag v-for="(tag, index) of record.tags" :key="index" color="blue"
             >{{ tag }}
           </a-tag>
         </a-space>
       </template>
       <template #acceptedRate="{ record }">
         {{
-          `${record.submitNum ? record.acceptNum / record.submitNum : "0"}% (${
-            record.acceptNum
-          }/${record.submitNum})`
+          `${
+            record.submitNum
+              ? ((record.acceptNum / record.submitNum) * 100).toFixed(1)
+              : "0"
+          }% (${record.acceptNum}/${record.submitNum})`
         }}
       </template>
       <template #createTime="{ record }">

@@ -1,16 +1,30 @@
 <template>
-  <div id="LoginView">
+  <div id="Register">
     <a-form
       class="arco-form"
       :model="form"
-      :style="{ width: '600px' }"
+      :style="{ width: '500px' }"
       @submit="handleSubmit"
     >
       <h2 style="text-align: center">用户注册</h2>
-      <a-form-item field="userAccount" label="账号">
+      <a-form-item
+        :rules="[
+          { required: true, message: '账号不能为空' },
+          { minLength: 4, message: '账号长度不能低于四位' },
+        ]"
+        field="userAccount"
+        label="账号"
+      >
         <a-input v-model="form.userAccount" placeholder="请输入账号" />
       </a-form-item>
-      <a-form-item field="userPassword" label="密码">
+      <a-form-item
+        :rules="[
+          { required: true, message: '密码不能为空' },
+          { minLength: 6, message: '密码长度不能低于六位' },
+        ]"
+        field="userPassword"
+        label="密码"
+      >
         <a-input-password
           v-model="form.userPassword"
           placeholder="请输入密码"
@@ -18,7 +32,15 @@
           allow-clear
         />
       </a-form-item>
-      <a-form-item field="userPassword" label="确认密码">
+      <!--检查密码是否一致-->
+      <a-form-item
+        :rules="[
+          { required: true, message: '请再次输入密码' },
+          { minLength: 6, message: '密码长度不能低于六位' },
+        ]"
+        field="userPassword"
+        label="确认密码"
+      >
         <a-input-password
           v-model="form.checkPassword"
           placeholder="请再次输入密码"
@@ -27,10 +49,10 @@
         />
       </a-form-item>
       <a-form-item>
-        <a-button @click="reback">返回</a-button>
+        <a-button @click="reback" type="outline">返回</a-button>
         <a-button type="outline" html-type="submit">注册</a-button>
       </a-form-item>
-      <a-link href="login">前往登录</a-link>
+      <a-link href="login" icon>前往登录</a-link>
     </a-form>
   </div>
 </template>
@@ -56,7 +78,16 @@ const reback = () => {
   router.back();
 };
 
+// 检查密码是否一致
+const checkPassword = async (value: string) => {
+  if (value !== form.userPassword) {
+    return message.error("两次输入的密码不一致");
+  }
+  return;
+};
+
 const handleSubmit = async () => {
+  await checkPassword(form.checkPassword as any);
   const res = await UserControllerService.userRegisterUsingPost(form);
   console.log("res: ", res);
   if (res.code === 0) {
@@ -74,7 +105,7 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-#LoginView {
+#Register {
   text-align: center;
 }
 
@@ -98,6 +129,11 @@ const handleSubmit = async () => {
   width: 150px;
   background-color: transparent;
   margin-left: 5px;
+}
+
+:deep(.arco-form-item-label) {
+  min-width: 75px;
+  text-align: right;
 }
 
 .arco-btn-secondary,

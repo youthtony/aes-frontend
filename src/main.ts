@@ -8,10 +8,13 @@ import "@/plugins/axios";
 import "@/access/index";
 import "bytemd/dist/index.css";
 import ArcoVueIcon from "@arco-design/web-vue/es/icon";
+import "resize-observer-polyfill";
+import Particles from "particles.vue3";
 
 createApp(App)
   .use(ArcoVue)
   .use(store)
   .use(router)
+  .use(Particles)
   .use(ArcoVueIcon)
   .mount("#app");

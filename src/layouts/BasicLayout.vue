@@ -8,7 +8,11 @@
       <a-layout-content class="-content">
         <router-view />
       </a-layout-content>
-      <a-layout-footer class="-footer">底部</a-layout-footer>
+      <a-layout-footer class="-footer">
+        <a-space>
+          <a-link href="https://github.com/youthtony/" icon>YT</a-link>
+        </a-space>
+      </a-layout-footer>
     </a-layout>
   </div>
 </template>
@@ -19,11 +23,12 @@ import GlobalHeader from "@/components/GlobalHeader.vue";
 
 <style scoped>
 #basicLayout {
+  background-position: center;
+  background-size: 100% auto;
+  background-image: url("@/assets/star.jpg");
 }
 
 .-header {
-  height: 100px;
-  box-sizing: border-box;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   margin: 8px 15px 2px 15px;
   background-color: var(--color-bg-2);
@@ -37,13 +42,14 @@ import GlobalHeader from "@/components/GlobalHeader.vue";
 }
 
 .-footer {
-  padding: 16px;
-  margin: 4px;
+  padding: 8px;
+  margin: 4px 8px 2px 8px;
   position: sticky;
-  text-align: center;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #9bf1d9;
+  text-align: left;
+  color: white;
+  border-radius: 5px;
+  background-image: url("@/assets/rubikSCube.jpg");
+  background-position: center;
+  background-size: 100% auto;
 }
 </style>
